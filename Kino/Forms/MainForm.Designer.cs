@@ -1,6 +1,6 @@
 ﻿namespace Kino
 {
-	partial class Form1
+	partial class MainForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,13 +28,14 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.PremiereDate = new System.Windows.Forms.Label();
+			this.RatingLabel = new System.Windows.Forms.Label();
 			this.BuyTicketButton = new System.Windows.Forms.Button();
 			this.MovieGenres = new System.Windows.Forms.Label();
 			this.MovieTitle = new System.Windows.Forms.Label();
-			this.movieImage = new System.Windows.Forms.PictureBox();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.Search = new System.Windows.Forms.Button();
 			this.label8 = new System.Windows.Forms.Label();
@@ -55,14 +56,13 @@
 			this.RatingMin = new System.Windows.Forms.TextBox();
 			this.TitleBox = new System.Windows.Forms.TextBox();
 			this.movieList = new System.Windows.Forms.ListBox();
+			this.movieImage = new System.Windows.Forms.PictureBox();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
-			this.radioButton1 = new System.Windows.Forms.RadioButton();
-			this.radioButton2 = new System.Windows.Forms.RadioButton();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.movieImage)).BeginInit();
 			this.panel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.movieImage)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -79,6 +79,8 @@
 			// 
 			// tabPage1
 			// 
+			this.tabPage1.Controls.Add(this.PremiereDate);
+			this.tabPage1.Controls.Add(this.RatingLabel);
 			this.tabPage1.Controls.Add(this.BuyTicketButton);
 			this.tabPage1.Controls.Add(this.MovieGenres);
 			this.tabPage1.Controls.Add(this.MovieTitle);
@@ -90,52 +92,65 @@
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage1.Size = new System.Drawing.Size(672, 492);
 			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "Wyszukaj film";
+			this.tabPage1.Text = "Panel użytkownika";
 			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// PremiereDate
+			// 
+			this.PremiereDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.PremiereDate.Location = new System.Drawing.Point(570, 416);
+			this.PremiereDate.Name = "PremiereDate";
+			this.PremiereDate.Size = new System.Drawing.Size(96, 35);
+			this.PremiereDate.TabIndex = 7;
+			this.PremiereDate.Text = "Data premiery: 25.12.2018";
+			this.PremiereDate.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			this.PremiereDate.Visible = false;
+			// 
+			// RatingLabel
+			// 
+			this.RatingLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.RatingLabel.Location = new System.Drawing.Point(377, 416);
+			this.RatingLabel.Name = "RatingLabel";
+			this.RatingLabel.Size = new System.Drawing.Size(67, 39);
+			this.RatingLabel.TabIndex = 7;
+			this.RatingLabel.Text = "Ocena: 8.2/10";
+			this.RatingLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			this.RatingLabel.Visible = false;
 			// 
 			// BuyTicketButton
 			// 
-			this.BuyTicketButton.Location = new System.Drawing.Point(517, 448);
+			this.BuyTicketButton.Location = new System.Drawing.Point(476, 447);
 			this.BuyTicketButton.Name = "BuyTicketButton";
 			this.BuyTicketButton.Size = new System.Drawing.Size(75, 23);
 			this.BuyTicketButton.TabIndex = 6;
 			this.BuyTicketButton.Text = "Zarezerwuj";
 			this.BuyTicketButton.UseVisualStyleBackColor = true;
 			this.BuyTicketButton.Visible = false;
+			this.BuyTicketButton.Click += new System.EventHandler(this.BuyTicketButton_Click);
 			// 
 			// MovieGenres
 			// 
 			this.MovieGenres.AutoEllipsis = true;
 			this.MovieGenres.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.MovieGenres.Location = new System.Drawing.Point(452, 358);
+			this.MovieGenres.Location = new System.Drawing.Point(380, 359);
 			this.MovieGenres.Name = "MovieGenres";
-			this.MovieGenres.Size = new System.Drawing.Size(195, 48);
+			this.MovieGenres.Size = new System.Drawing.Size(259, 42);
 			this.MovieGenres.TabIndex = 5;
 			this.MovieGenres.Text = "Dramat, Komedia, Obyczajowe";
-			this.MovieGenres.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			this.MovieGenres.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.MovieGenres.Visible = false;
 			// 
 			// MovieTitle
 			// 
-			this.MovieTitle.AutoSize = true;
 			this.MovieTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.MovieTitle.Location = new System.Drawing.Point(483, 320);
+			this.MovieTitle.Location = new System.Drawing.Point(375, 304);
 			this.MovieTitle.Name = "MovieTitle";
-			this.MovieTitle.Size = new System.Drawing.Size(125, 29);
+			this.MovieTitle.Size = new System.Drawing.Size(264, 70);
 			this.MovieTitle.TabIndex = 5;
 			this.MovieTitle.Text = "Tytuł filmu";
+			this.MovieTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.MovieTitle.UseMnemonic = false;
 			this.MovieTitle.Visible = false;
-			// 
-			// movieImage
-			// 
-			this.movieImage.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("movieImage.BackgroundImage")));
-			this.movieImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-			this.movieImage.Location = new System.Drawing.Point(441, 81);
-			this.movieImage.Name = "movieImage";
-			this.movieImage.Size = new System.Drawing.Size(206, 224);
-			this.movieImage.TabIndex = 4;
-			this.movieImage.TabStop = false;
-			this.movieImage.Visible = false;
 			// 
 			// panel1
 			// 
@@ -335,9 +350,21 @@
 			this.movieList.ItemHeight = 20;
 			this.movieList.Location = new System.Drawing.Point(9, 65);
 			this.movieList.Name = "movieList";
-			this.movieList.Size = new System.Drawing.Size(400, 424);
+			this.movieList.Size = new System.Drawing.Size(348, 424);
 			this.movieList.TabIndex = 0;
 			this.movieList.SelectedIndexChanged += new System.EventHandler(this.movieList_SelectedIndexChanged);
+			// 
+			// movieImage
+			// 
+			this.movieImage.BackColor = System.Drawing.Color.Transparent;
+			this.movieImage.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("movieImage.BackgroundImage")));
+			this.movieImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.movieImage.Location = new System.Drawing.Point(425, 96);
+			this.movieImage.Name = "movieImage";
+			this.movieImage.Size = new System.Drawing.Size(173, 205);
+			this.movieImage.TabIndex = 4;
+			this.movieImage.TabStop = false;
+			this.movieImage.Visible = false;
 			// 
 			// tabPage2
 			// 
@@ -359,52 +386,25 @@
 			this.tabPage3.Text = "Panel pracwnika";
 			this.tabPage3.UseVisualStyleBackColor = true;
 			// 
-			// radioButton1
-			// 
-			this.radioButton1.AutoSize = true;
-			this.radioButton1.Location = new System.Drawing.Point(516, 542);
-			this.radioButton1.Name = "radioButton1";
-			this.radioButton1.Size = new System.Drawing.Size(85, 17);
-			this.radioButton1.TabIndex = 2;
-			this.radioButton1.TabStop = true;
-			this.radioButton1.Text = "radioButton1";
-			this.radioButton1.UseVisualStyleBackColor = true;
-			// 
-			// radioButton2
-			// 
-			this.radioButton2.AutoSize = true;
-			this.radioButton2.Location = new System.Drawing.Point(607, 542);
-			this.radioButton2.Name = "radioButton2";
-			this.radioButton2.Size = new System.Drawing.Size(85, 17);
-			this.radioButton2.TabIndex = 2;
-			this.radioButton2.TabStop = true;
-			this.radioButton2.Text = "radioButton1";
-			this.radioButton2.UseVisualStyleBackColor = true;
-			// 
-			// Form1
+			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(704, 571);
-			this.Controls.Add(this.radioButton2);
-			this.Controls.Add(this.radioButton1);
+			this.ClientSize = new System.Drawing.Size(704, 543);
 			this.Controls.Add(this.tabControl1);
-			this.Name = "Form1";
+			this.Name = "MainForm";
 			this.Text = "Kino";
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
-			this.tabPage1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.movieImage)).EndInit();
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.movieImage)).EndInit();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
 		#endregion
-		private System.Windows.Forms.BindingSource moviesBindingSource;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tabPage1;
 		private System.Windows.Forms.TabPage tabPage2;
@@ -429,12 +429,12 @@
 		private System.Windows.Forms.DateTimePicker PremiereMin;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.TabPage tabPage3;
-		private System.Windows.Forms.RadioButton radioButton1;
-		private System.Windows.Forms.RadioButton radioButton2;
 		private System.Windows.Forms.Button BuyTicketButton;
 		private System.Windows.Forms.Label MovieGenres;
 		private System.Windows.Forms.Label MovieTitle;
 		private System.Windows.Forms.PictureBox movieImage;
+		private System.Windows.Forms.Label RatingLabel;
+		private System.Windows.Forms.Label PremiereDate;
 	}
 }
 

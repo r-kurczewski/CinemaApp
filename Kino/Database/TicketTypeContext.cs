@@ -6,19 +6,19 @@ using System.Data.Entity;
 namespace Kino.Database
 {
 	[DbConfigurationType(typeof(MySqlEFConfiguration))]
-	public class GenreContext : DbContext
+	public class TicketTypeContext : DbContext
 	{
-		public DbSet<Genre> Context { get; set; }
+		public DbSet<TicketType> Context { get; set; }
 
-		public GenreContext() : base() { }
+		public TicketTypeContext() : base() { }
 
-		public GenreContext(DbConnection existingConnection, bool contextOwnsConnection)
+		public TicketTypeContext(DbConnection existingConnection, bool contextOwnsConnection)
 		  : base(existingConnection, contextOwnsConnection) { }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			modelBuilder.Entity<Genre>().MapToStoredProcedures();
+			modelBuilder.Entity<TicketType>().MapToStoredProcedures();
 		}
 	}
 }

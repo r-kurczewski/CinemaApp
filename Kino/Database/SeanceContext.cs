@@ -1,24 +1,23 @@
 ﻿using MySql.Data.Entity;
-using System;
 using System.Data.Common;
 using System.Data.Entity;
 
 namespace Kino.Database
 {
 	[DbConfigurationType(typeof(MySqlEFConfiguration))]
-	public class GenreContext : DbContext
+	public class SeanceContext : DbContext
 	{
-		public DbSet<Genre> Context { get; set; }
+		public DbSet<Seance> Context { get; set; }
 
-		public GenreContext() : base() { }
+		public SeanceContext() : base() { }
 
-		public GenreContext(DbConnection existingConnection, bool contextOwnsConnection)
+		public SeanceContext(DbConnection existingConnection, bool contextOwnsConnection)
 		  : base(existingConnection, contextOwnsConnection) { }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			modelBuilder.Entity<Genre>().MapToStoredProcedures();
+			modelBuilder.Entity<Seance>().MapToStoredProcedures();
 		}
 	}
 }
