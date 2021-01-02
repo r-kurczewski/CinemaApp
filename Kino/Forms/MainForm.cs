@@ -1,4 +1,4 @@
-﻿using Kino.Database;
+﻿using Kino.Database.Model;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace Kino
 				Name = "Dowolny"
 			};
 			List<Genre> genres = new List<Genre>() { defaultGenre };
-			genres.AddRange(Program.genres.Context.ToList());
+			genres.AddRange(Program.dbContext.Genres.ToList());
 			GenreSelect.DataSource = genres;
 
 			//MySqlTransaction transaction = Program.connection.BeginTransaction();
@@ -80,7 +80,7 @@ namespace Kino
 		{
 			string title = TitleBox.Text;
 			string genre = GenreSelect.Text;
-			int? genreID = Program.genres.Context.FirstOrDefault(x => x.Name == genre)?.ID;
+			int? genreID = Program.dbContext.Genres.FirstOrDefault(x => x.Name == genre)?.ID;
 			decimal? ratingMin = RatingMin.Text.ToNullableDecimal();
 			decimal? ratingMax = RatingMax.Text.ToNullableDecimal();
 			TimeSpan? lengthMin = LengthMin.Text.ToNullableTimeSpan();
@@ -132,7 +132,7 @@ namespace Kino
 
 			if(conditions.Count > 0) sql += " WHERE " + string.Join(" AND ", conditions);
 			Console.WriteLine(sql);
-			var query = Program.movies.Context.SqlQuery(sql, parameters.ToArray());
+			var query = Program.dbContext.Movies.SqlQuery(sql, parameters.ToArray());
 			movieList.DataSource = query.ToList();
 		}
 
@@ -152,7 +152,7 @@ namespace Kino
 			MovieTitle.Text = movie.Title;
 
 			var pId = new MySqlParameter("@id", movie.ID);
-			var genres = Program.genres.Context.SqlQuery
+			var genres = Program.dbContext.Genres.SqlQuery
 				("SELECT * FROM `movie_genres` " +
 				"JOIN genres ON movie_genres.genre_id = genres.id " +
 				"WHERE movie_id= @id", pId);
@@ -168,7 +168,7 @@ namespace Kino
 			var bytes = Encoding.Default.GetBytes(title);
 			var encTitle = Encoding.Convert(Encoding.Default, Encoding.UTF8, bytes);
 			var pTitle = new MySqlParameter("@title", encTitle);
-			var query = Program.movies.Context.SqlQuery("SELECT * FROM MOVIES WHERE TITLE = @title", pTitle);
+			var query = Program.dbContext.Movies.SqlQuery("SELECT * FROM MOVIES WHERE TITLE = @title", pTitle);
 			return query.First();
 		}
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Kino.Database
+namespace Kino.Database.Model
 {
 	[Table("cinema_rooms")]
 	public class CinemaRoom

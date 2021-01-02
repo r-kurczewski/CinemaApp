@@ -1,4 +1,4 @@
-﻿using Kino.Database;
+﻿using Kino.Database.Model;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -260,8 +260,8 @@ namespace Kino
 
 		private void ReserveTicketForm_Load(object sender, EventArgs e)
 		{
-			departmentsList.DataSource = Program.departments.Context.ToList();
-			ticketType.DataSource = Program.ticketTypes.Context.ToList();
+			departmentsList.DataSource = Program.dbContext.Departments.ToList();
+			ticketType.DataSource = Program.dbContext.TicketTypes.ToList();
 		}
 
 		private void departmentsList_SelectedIndexChanged(object sender, EventArgs e)
@@ -272,7 +272,7 @@ namespace Kino
 							WHERE department_id = @dID AND movie_id = @mID";
 			var dID = new MySqlParameter("dID", selectedDepartment.ID);
 			var mID = new MySqlParameter("mID", MainForm.selectedMovie.ID);
-			var query = Program.seances.Context.SqlQuery(sql, dID, mID);
+			var query = Program.dbContext.Seances.SqlQuery(sql, dID, mID);
 			seancesList.DataSource = query.ToList();
 			SetDetailsVisible(seancesList.Items.Count > 0);
 		}
@@ -283,13 +283,13 @@ namespace Kino
 			var sql = @"SELECT * FROM cinema_rooms 
 							WHERE department_id = @id;";
 			var pId = new MySqlParameter("@id", selectedDepartment.ID);
-			int roomSeats = Program.cinemaRooms.Context.SqlQuery(sql, pId).FirstOrDefault().Total_Seats;
+			int roomSeats = Program.dbContext.CinemaRooms.SqlQuery(sql, pId).FirstOrDefault().Total_Seats;
 			var seats = new SortedSet<int>(Enumerable.Range(1, roomSeats));
 
 			sql = @"SELECT * FROM tickets
 					WHERE seance_id = @id";
 			var pID = new MySqlParameter("@id", selectedSeance.ID);
-			var takenSeats = new SortedSet<int>(Program.tickets.Context.SqlQuery(sql, pID).Select(x => x.Seat_Number));
+			var takenSeats = new SortedSet<int>(Program.dbContext.Tickets.SqlQuery(sql, pID).Select(x => x.Seat_Number));
 
 			seats.ExceptWith(takenSeats);
 			seatNumber.DataSource = seats.ToList();
@@ -328,7 +328,7 @@ namespace Kino
 			parameters.Add(new MySqlParameter("@surname", surnameBox.Text));
 			parameters.Add(new MySqlParameter("@phone", phoneBox.Text));
 			parameters.Add(new MySqlParameter("@email", emailBox.Text));
-			int? clientID = Program.clients.Context.SqlQuery(sql, parameters.ToArray()).FirstOrDefault()?.ID;
+			int? clientID = Program.dbContext.Clients.SqlQuery(sql, parameters.ToArray()).FirstOrDefault()?.ID;
 
 			MySqlCommand cmd;
 			while(!clientID.HasValue)

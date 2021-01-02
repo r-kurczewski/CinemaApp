@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Kino.Database
+namespace Kino.Database.Model
 {
 	public class Ticket
 	{

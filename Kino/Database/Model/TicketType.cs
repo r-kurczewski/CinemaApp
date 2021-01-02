@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Kino.Database
+namespace Kino.Database.Model
 {
 	[Table("ticket_types")]
 	public class TicketType

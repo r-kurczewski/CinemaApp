@@ -103,35 +103,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\CinemaRoom.cs" />
-    <Compile Include="Database\CinemaRoomContext - Copy.cs" />
-    <Compile Include="Database\CinemaRoomContext.cs" />
-    <Compile Include="Database\Client.cs" />
-    <Compile Include="Database\ClientContext.cs" />
-    <Compile Include="Database\Department.cs" />
-    <Compile Include="Database\DepartmentContext.cs" />
-    <Compile Include="Database\Employee.cs" />
-    <Compile Include="Database\EmployeeContext.cs" />
-    <Compile Include="Database\Genre.cs" />
-    <Compile Include="Database\GenreContext.cs" />
-    <Compile Include="Database\Job.cs" />
-    <Compile Include="Database\JobContext.cs" />
-    <Compile Include="Database\Movie.cs" />
-    <Compile Include="Database\MovieGenreContext.cs" />
-    <Compile Include="Database\MovieGenres.cs" />
-    <Compile Include="Database\Seance.cs" />
-    <Compile Include="Database\Ticket.cs" />
-    <Compile Include="Database\TicketContext.cs" />
-    <Compile Include="Database\TicketType.cs" />
-    <Compile Include="Database\TicketTypeContext.cs" />
+    <Compile Include="Database\CinemaContext.cs" />
+    <Compile Include="Database\Model\CinemaRoom.cs" />
+    <Compile Include="Database\Model\Client.cs" />
+    <Compile Include="Database\Model\Department.cs" />
+    <Compile Include="Database\Model\Employee.cs" />
+    <Compile Include="Database\Model\Genre.cs" />
+    <Compile Include="Database\Model\Job.cs" />
+    <Compile Include="Database\Model\Movie.cs" />
+    <Compile Include="Database\Model\MovieGenres.cs" />
+    <Compile Include="Database\Model\Seance.cs" />
+    <Compile Include="Database\Model\Ticket.cs" />
+    <Compile Include="Database\Model\TicketType.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\MovieContext.cs" />
-    <Compile Include="Database\SeanceContext.cs" />
     <Compile Include="MyExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

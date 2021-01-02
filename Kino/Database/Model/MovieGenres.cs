@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Kino.Database
+namespace Kino.Database.Model
 {
 	[Table("movie_genres")]
-	public class MovieGenres
+	public class MovieGenre
 	{
 		public int ID { get; set; }
 

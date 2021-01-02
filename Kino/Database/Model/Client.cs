@@ -1,4 +1,4 @@
-﻿namespace Kino.Database
+﻿namespace Kino.Database.Model
 {
 	public class Client
 	{
