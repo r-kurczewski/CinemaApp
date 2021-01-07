@@ -22,7 +22,11 @@ namespace Kino
 		{
 			try
 			{
+				#if DEBUG
+				connection = new MySqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["Local"].ConnectionString);
+				#else
 				connection = new MySqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["MyContext"].ConnectionString);
+				#endif
 				connection.Open();
 			}
 			catch (Exception ex)

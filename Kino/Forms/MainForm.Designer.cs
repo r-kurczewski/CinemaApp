@@ -70,11 +70,7 @@
 			this.button3 = new System.Windows.Forms.Button();
 			this.departmentsGridView = new System.Windows.Forms.DataGridView();
 			this.departmentsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-			this.bdproj_fullDataSet = new Kino.bdproj_fullDataSet();
 			this.seancesBindingSource = new System.Windows.Forms.BindingSource(this.components);
-			this.seancesTableAdapter = new Kino.bdproj_fullDataSetTableAdapters.seancesTableAdapter();
-			this.ticketsTableAdapter = new Kino.bdproj_fullDataSetTableAdapters.ticketsTableAdapter();
-			this.departmentsTableAdapter = new Kino.bdproj_fullDataSetTableAdapters.departmentsTableAdapter();
 			this.ProfitReportButton = new System.Windows.Forms.Button();
 			this.EmployeesReportButton = new System.Windows.Forms.Button();
 			this.MovieReportButton = new System.Windows.Forms.Button();
@@ -89,7 +85,6 @@
 			this.tabPage3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.departmentsGridView)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.departmentsBindingSource)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.bdproj_fullDataSet)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.seancesBindingSource)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.ticketsibfk3BindingSource)).BeginInit();
 			this.SuspendLayout();
@@ -522,33 +517,6 @@
 			this.departmentsGridView.Size = new System.Drawing.Size(660, 451);
 			this.departmentsGridView.TabIndex = 0;
 			// 
-			// departmentsBindingSource
-			// 
-			this.departmentsBindingSource.DataMember = "departments";
-			this.departmentsBindingSource.DataSource = this.bdproj_fullDataSet;
-			// 
-			// bdproj_fullDataSet
-			// 
-			this.bdproj_fullDataSet.DataSetName = "bdproj_fullDataSet";
-			this.bdproj_fullDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-			// 
-			// seancesBindingSource
-			// 
-			this.seancesBindingSource.DataMember = "seances";
-			this.seancesBindingSource.DataSource = this.bdproj_fullDataSet;
-			// 
-			// seancesTableAdapter
-			// 
-			this.seancesTableAdapter.ClearBeforeFill = true;
-			// 
-			// ticketsTableAdapter
-			// 
-			this.ticketsTableAdapter.ClearBeforeFill = true;
-			// 
-			// departmentsTableAdapter
-			// 
-			this.departmentsTableAdapter.ClearBeforeFill = true;
-			// 
 			// ProfitReportButton
 			// 
 			this.ProfitReportButton.Location = new System.Drawing.Point(56, 463);
@@ -588,11 +556,6 @@
 			this.label10.TabIndex = 6;
 			this.label10.Text = "Raporty";
 			// 
-			// ticketsibfk3BindingSource
-			// 
-			this.ticketsibfk3BindingSource.DataMember = "tickets_ibfk_3";
-			this.ticketsibfk3BindingSource.DataSource = this.seancesBindingSource;
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -614,7 +577,6 @@
 			this.tabPage3.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.departmentsGridView)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.departmentsBindingSource)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.bdproj_fullDataSet)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.seancesBindingSource)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.ticketsibfk3BindingSource)).EndInit();
 			this.ResumeLayout(false);
@@ -652,14 +614,10 @@
 		private System.Windows.Forms.PictureBox movieImage;
 		private System.Windows.Forms.Label RatingLabel;
 		private System.Windows.Forms.Label PremiereDate;
-		private bdproj_fullDataSet bdproj_fullDataSet;
 		private System.Windows.Forms.BindingSource seancesBindingSource;
-		private bdproj_fullDataSetTableAdapters.seancesTableAdapter seancesTableAdapter;
 		private System.Windows.Forms.DataGridView departmentsGridView;
 		private System.Windows.Forms.BindingSource ticketsibfk3BindingSource;
-		private bdproj_fullDataSetTableAdapters.ticketsTableAdapter ticketsTableAdapter;
 		private System.Windows.Forms.BindingSource departmentsBindingSource;
-		private bdproj_fullDataSetTableAdapters.departmentsTableAdapter departmentsTableAdapter;
 		private System.Windows.Forms.DataGridView dataGridView1;
 		private System.Windows.Forms.Button DeleteButton;
 		private System.Windows.Forms.Button AddEditButton;
