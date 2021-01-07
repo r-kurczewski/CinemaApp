@@ -1,20 +1,50 @@
 ﻿using Kino.Database.Model;
+using Kino.Forms;
+using Kino.Other;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
+using Kino.Database;
+using System.Data.SqlClient;
 
-namespace Kino
+namespace Kino.Forms
 {
 	public partial class MainForm : Form
 	{
 		public static Movie selectedMovie;
+		private Genre defaultGenre;
+
+
+		List<DbSelectOption> dbList = new List<DbSelectOption>();
+		private DbSelectOption selectedDb;
+
+		class DbSelectOption
+		{
+			public string label;
+			public Action load;
+			public Action addEdit;
+			public Action delete;
+
+			public DbSelectOption(string label, Action load, Action addEdit, Action delete)
+			{
+				this.label = label;
+				this.load = load;
+				this.addEdit = addEdit;
+				this.delete = delete;
+			}
+
+			public override string ToString()
+			{
+				return label;
+			}
+		}
 
 		public MainForm()
 		{
@@ -23,8 +53,9 @@ namespace Kino
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
+			Program.dbContext = new Database.CinemaContext(Program.connection);
 			//movieList.DataSource = Program.movies.Context.ToList();
-			var defaultGenre = new Genre()
+			defaultGenre = new Genre()
 			{
 				ID = -1,
 				Name = "Dowolny"
@@ -33,32 +64,131 @@ namespace Kino
 			genres.AddRange(Program.dbContext.Genres.ToList());
 			GenreSelect.DataSource = genres;
 
-			//MySqlTransaction transaction = Program.connection.BeginTransaction();
+			dbList.Add(new DbSelectOption("Filmy", () => // load
+			{
+				Program.dbContext.Movies.OrderBy(x => x.ID).Load();
+				var query = Program.dbContext.Movies.Local.ToBindingList();
+				dataGridView1.DataSource = query;
+			}, () => // addEdit
+			{
+				Movie movie = null;
+				if (dataGridView1.SelectedRows.Count == 1)
+				{
+					movie = (Movie)dataGridView1.SelectedRows[0].DataBoundItem;
+				}
+				new MovieEditForm(movie).ShowDialog();
+				RefreshGridView();
+			}, () => // delete
+			{
+				try
+				{
+					var movie = (Movie)dataGridView1.SelectedRows[0].DataBoundItem;
+					if (MessageBox.Show("Czy na pewno chcesz usunąć rekord?", "Usuń rekord", MessageBoxButtons.YesNo) == DialogResult.Yes)
+					{
+						Program.dbContext.Movies.Remove(Program.dbContext.Movies.First(x => x.ID == movie.ID));
+						Program.dbContext.SaveChanges();
+					}
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show("Nie udało się usunąć rekordu. " + ex.Message);
+				}
+				finally
+				{
+					RefreshGridView();
+				}
 
-			//try
-			//{
-			//	// DbConnection that is already opened
-			//	using (var movies = Program.movies)
-			//	{
-			//		foreach (var movie in movies.Movies)
-			//			Console.WriteLine(movie.Title);
+			}));
+			dbList.Add(new DbSelectOption("Pracownicy", () =>
+			{
+				var id = int.Parse(departmentID.Text);
+				Program.dbContext.Employees.OrderBy(x => x.ID).Load();
+				var query = Program.dbContext.Employees.Local.ToBindingList().Where(x => x.Department_Id == id).ToList();
+				dataGridView1.DataSource = query;
+			}, () =>
+			{
+				Employee employee = null;
+				if (dataGridView1.SelectedRows.Count == 1)
+				{
+					employee = (Employee)dataGridView1.SelectedRows[0].DataBoundItem;
+				}
+				new EmployeeEditForm(employee, int.Parse(departmentID.Text)).ShowDialog();
+				RefreshGridView();
+			}, () =>
+			{
+				try
+				{
+					var employee = (Employee)dataGridView1.SelectedRows[0].DataBoundItem;
+					if (MessageBox.Show("Czy na pewno chcesz usunąć rekord?", "Usuń rekord", MessageBoxButtons.YesNo) == DialogResult.Yes)
+					{
+						Program.dbContext.Employees.Remove(Program.dbContext.Employees.First(x => x.ID == employee.ID));
+						Program.dbContext.SaveChanges();
+					}
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show("Nie udało się usunąć rekordu. " + ex.Message);
+				}
+				finally
+				{
+					RefreshGridView();
+				}
+			}));
+			dbList.Add(new DbSelectOption("Seanse", () =>
+			{
+				int id = int.Parse(departmentID.Text);
+				var query = (from s in Program.dbContext.Seances
+								 join c in Program.dbContext.CinemaRooms on s.Cinema_Room_ID equals c.ID
+								 where c.Department_ID == id
+								 orderby s.ID
+								 select s).ToList();
+				var bindingList = new BindingList<Seance>(query);
+				dataGridView1.DataSource = bindingList;
+			}, () =>
+			{
+				Seance seance = null;
+				if (dataGridView1.SelectedRows.Count == 1)
+				{
+					seance = (Seance)dataGridView1.SelectedRows[0].DataBoundItem;
+				}
+				new SeanceEdit(seance, int.Parse(departmentID.Text)).ShowDialog();
+				RefreshGridView();
+			}, () =>
+			{
+				try
+				{
+					var seance = (Seance)dataGridView1.SelectedRows[0].DataBoundItem;
+					if (MessageBox.Show("Czy na pewno chcesz usunąć rekord?", "Usuń rekord", MessageBoxButtons.YesNo) == DialogResult.Yes)
+					{
+						Program.dbContext.Seances.Remove(Program.dbContext.Seances.First(x => x.ID == seance.ID));
+						Program.dbContext.SaveChanges();
+					}
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show("Nie udało się usunąć rekordu. " + ex.Message);
+				}
+				finally
+				{
+					RefreshGridView();
+				}
+			}));
+			dbSelect.DataSource = dbList;
 
-			//		movies.Database.UseTransaction(transaction);
-			//		movies.SaveChanges();
-
-			//		transaction.Commit();
-			//	}
-			//}
-			//catch
-			//{
-			//	transaction.Rollback();
-			//	throw;
-			//}
+			Program.dbContext.Departments.Load();
+			departmentsGridView.DataSource = Program.dbContext.Departments.Local.ToBindingList();
 		}
 
-		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+		private void dbSelect_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			RefreshGridView();
+		}
 
+		private void RefreshGridView()
+		{
+			Program.dbContext = new CinemaContext(Program.connection);
+			selectedDb = (DbSelectOption)dbSelect.SelectedValue;
+			selectedDb.load();
 		}
 
 		private void label1_Click(object sender, EventArgs e)
@@ -79,103 +209,174 @@ namespace Kino
 		private void Search_Click(object sender, EventArgs e)
 		{
 			string title = TitleBox.Text;
-			string genre = GenreSelect.Text;
-			int? genreID = Program.dbContext.Genres.FirstOrDefault(x => x.Name == genre)?.ID;
+			Genre genre = (Genre)GenreSelect.SelectedValue;
 			decimal? ratingMin = RatingMin.Text.ToNullableDecimal();
 			decimal? ratingMax = RatingMax.Text.ToNullableDecimal();
 			TimeSpan? lengthMin = LengthMin.Text.ToNullableTimeSpan();
 			TimeSpan? lengthMax = LengthMax.Text.ToNullableTimeSpan();
 
-			List<MySqlParameter> parameters = new List<MySqlParameter>();
-			var sql = @"SELECT DISTINCT movies.* FROM `movies` JOIN movie_genres ON movies.id = movie_id JOIN genres on genres.id = genre_id";
-			List<string> conditions = new List<string>();
-			if (title != string.Empty)
-			{
-				conditions.Add("title = @title");
-				parameters.Add(new MySqlParameter("@title", title));
-			}
-			if (ratingMin.HasValue)
-			{
-				conditions.Add("rating >= @ratingMin");
-				parameters.Add(new MySqlParameter("@ratingMin", ratingMin.Value));
-			}
-			if (ratingMax.HasValue)
-			{
-				conditions.Add("rating <= @ratingMax");
-				parameters.Add(new MySqlParameter("@ratingMax", ratingMax.Value));
-			}
-			if (PremiereMin.Checked)
-			{
-				conditions.Add("premiereMin >= @premiereMin");
-				parameters.Add(new MySqlParameter("@premiereMin", PremiereMin.Value));
-			}
-			if (PremiereMax.Checked)
-			{
-				conditions.Add("premiereMax <= @premiereMax");
-				parameters.Add(new MySqlParameter("@premiereMax", PremiereMax.Value));
-			}
-			if (lengthMin.HasValue)
-			{
-				conditions.Add("length >= @lengthMin");
-				parameters.Add(new MySqlParameter("@lengthMin", lengthMin.Value));
-			}
-			if (lengthMax.HasValue)
-			{
-				conditions.Add("length <= @lengthMax");
-				parameters.Add(new MySqlParameter("@lengthMax", lengthMax.Value));
-			}
-			if (genreID.HasValue)
-			{
-				conditions.Add("genre_id = @genreID");
-				parameters.Add(new MySqlParameter("@genreID", genreID.Value));
-			}
-
-			if(conditions.Count > 0) sql += " WHERE " + string.Join(" AND ", conditions);
-			Console.WriteLine(sql);
-			var query = Program.dbContext.Movies.SqlQuery(sql, parameters.ToArray());
-			movieList.DataSource = query.ToList();
+			var query = (from m in Program.dbContext.Movies
+							 join mg in Program.dbContext.MovieGenres on m.ID equals mg.Movie_ID
+							 join g in Program.dbContext.Genres on mg.Genre_ID equals g.ID
+							 where (title == string.Empty || m.Title.Contains(title))
+							 && (!ratingMin.HasValue || m.Rating >= ratingMin)
+							 && (!ratingMax.HasValue || m.Rating <= ratingMax)
+							 && (!PremiereMin.Checked || m.Premiere >= PremiereMin.Value)
+							 && (!PremiereMax.Checked || m.Premiere <= PremiereMax.Value)
+							 && (!lengthMin.HasValue || m.Length >= lengthMin.Value)
+							 && (!lengthMax.HasValue || m.Length <= lengthMax.Value)
+							 && (genre.ID == defaultGenre.ID || g.ID == genre.ID)
+							 select m).Distinct().ToList();
+			movieList.DataSource = query;
+			ShowMovieDetails(movieList.Items.Count > 0);
 		}
 
 		private void movieList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			var selected = (ListBox)sender;
-			selectedMovie = FindMovie(selected.Text);
-			movieImage.Visible = true;
-			MovieTitle.Visible = true;
-			MovieGenres.Visible = true;
-			BuyTicketButton.Visible = true;
-			PremiereDate.Visible = true;
-			RatingLabel.Visible = true;
+			selectedMovie = (Movie)movieList.SelectedValue;
 
 			var movie = selectedMovie;
 
 			MovieTitle.Text = movie.Title;
 
-			var pId = new MySqlParameter("@id", movie.ID);
-			var genres = Program.dbContext.Genres.SqlQuery
-				("SELECT * FROM `movie_genres` " +
-				"JOIN genres ON movie_genres.genre_id = genres.id " +
-				"WHERE movie_id= @id", pId);
+			var genres = (from mg in Program.dbContext.MovieGenres
+							  join m in Program.dbContext.Movies on mg.Movie_ID equals m.ID
+							  join g in Program.dbContext.Genres on mg.Genre_ID equals g.ID
+							  where mg.Movie_ID == movie.ID
+							  select g.Name).ToList();
+
 			MovieGenres.Text = string.Join(", ", genres);
 
 			RatingLabel.Text = $"Ocena: {movie.Rating}/10";
 
 			PremiereDate.Text = $"Data premiery: {movie.Premiere}";
+
+			ShowMovieDetails(true);
 		}
 
-		Movie FindMovie(string title)
+		private void ShowMovieDetails(bool visible)
 		{
-			var bytes = Encoding.Default.GetBytes(title);
-			var encTitle = Encoding.Convert(Encoding.Default, Encoding.UTF8, bytes);
-			var pTitle = new MySqlParameter("@title", encTitle);
-			var query = Program.dbContext.Movies.SqlQuery("SELECT * FROM MOVIES WHERE TITLE = @title", pTitle);
-			return query.First();
+			movieImage.Visible = visible;
+			MovieTitle.Visible = visible;
+			MovieGenres.Visible = visible;
+			BuyTicketButton.Visible = visible;
+			PremiereDate.Visible = visible;
+			RatingLabel.Visible = visible;
 		}
 
 		private void BuyTicketButton_Click(object sender, EventArgs e)
 		{
 			var reserveTicket = new ReserveTicketForm(selectedMovie);
 			reserveTicket.ShowDialog();
+		}
+
+		private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+		{
+
+		}
+
+
+
+		private void SaveButton_Click(object sender, EventArgs e)
+		{
+			Program.dbContext.SaveChanges();
+			MessageBox.Show("Zapisano zmiany");
+		}
+
+		private void DeleteButton_Click(object sender, EventArgs e)
+		{
+			selectedDb.delete();
+		}
+
+		private void AddNewButton_Click(object sender, EventArgs e)
+		{
+			selectedDb.addEdit();
+		}
+
+		private void RefreshButton_Click(object sender, EventArgs e)
+		{
+			RefreshGridView();
+		}
+
+		private void RemoveButton2_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				var department = (Department)departmentsGridView.SelectedRows[0].DataBoundItem;
+				if (MessageBox.Show("Czy na pewno chcesz usunąć rekord?", "Usuń rekord", MessageBoxButtons.YesNo) == DialogResult.Yes)
+				{
+					Program.dbContext.Departments.Remove(Program.dbContext.Departments.First(x => x.ID == department.ID));
+					Program.dbContext.SaveChanges();
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Nie udało się usunąć rekordu. " + ex.Message);
+			}
+			finally
+			{
+				RefreshGridView2();
+			}
+		}
+
+		private void AddEditButton2_Click(object sender, EventArgs e)
+		{
+			Department department = null;
+			if (departmentsGridView.SelectedRows.Count == 1)
+			{
+				department = (Department)departmentsGridView.SelectedRows[0].DataBoundItem;
+			}
+			new DepartmentEditForm(department).ShowDialog();
+
+			RefreshGridView2();
+		}
+
+		private void RefreshGridView2()
+		{
+			Program.dbContext = new CinemaContext(Program.connection);
+			Program.dbContext.Departments.Load();
+			departmentsGridView.DataSource = Program.dbContext.Departments.Local.ToBindingList();
+		}
+
+		private void ProfitReportButton_Click(object sender, EventArgs e)
+		{
+			var select = "SELECT * FROM profit_monthly";
+			var dataAdapter = new MySqlDataAdapter(select, Program.connection);
+
+			var commandBuilder = new MySqlCommandBuilder(dataAdapter);
+			var ds = new DataSet();
+			dataAdapter.Fill(ds);
+
+			new ReportForm(ds.Tables[0]).ShowDialog();
+		}
+
+		private void MovieReportButton_Click(object sender, EventArgs e)
+		{
+			var select = "SELECT * FROM most_profitable_movies";
+			var dataAdapter = new MySqlDataAdapter(select, Program.connection);
+
+			var commandBuilder = new MySqlCommandBuilder(dataAdapter);
+			var ds = new DataSet();
+			dataAdapter.Fill(ds);
+
+			new ReportForm(ds.Tables[0]).ShowDialog();
+		}
+
+		private void EmployeesReportButton_Click(object sender, EventArgs e)
+		{
+			var select = "SELECT * FROM employee_list";
+			var dataAdapter = new MySqlDataAdapter(select, Program.connection);
+
+			var commandBuilder = new MySqlCommandBuilder(dataAdapter);
+			var ds = new DataSet();
+			dataAdapter.Fill(ds);
+
+			new ReportForm(ds.Tables[0]).ShowDialog();
 		}
 	}
 }

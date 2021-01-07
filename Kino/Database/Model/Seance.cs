@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Kino.Database.Model
@@ -16,9 +18,21 @@ namespace Kino.Database.Model
 		[Column("3D")]
 		public bool Is3D { get; set; }
 
+		public string Localisation { get; set; }
+
+		public LocalisationType GetLocalisation() => (LocalisationType)Enum.Parse(typeof(LocalisationType), Localisation, true);
+
 		public override string ToString()
 		{
 			return $"{Date.ToString("dddd, dd MMMM yyyy")}";
+		}
+
+		public enum LocalisationType
+		{
+			[Description("Brak")] Brak,
+			[Description("Lector")] Lektor,
+			[Description("Dubbing")] Dubbing,
+			[Description("Napisy")] Napisy
 		}
 	}
 }

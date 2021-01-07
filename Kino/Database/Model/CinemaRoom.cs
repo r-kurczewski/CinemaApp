@@ -15,7 +15,7 @@ namespace Kino.Database.Model
 
 		public override string ToString()
 		{
-			return $"{Department_ID} - {Room_Number}";
+			return $"{Room_Number}";
 		}
 	}
 }

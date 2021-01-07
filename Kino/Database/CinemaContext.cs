@@ -1,6 +1,5 @@
 ﻿using Kino.Database.Model;
 using MySql.Data.Entity;
-using System;
 using System.Data.Common;
 using System.Data.Entity;
 

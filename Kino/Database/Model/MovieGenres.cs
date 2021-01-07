@@ -13,7 +13,7 @@ namespace Kino.Database.Model
 
 		public override string ToString()
 		{
-			return $"{Movie_ID}->{Genre_ID}";
+			return $"{Movie_ID}--{Genre_ID}";
 		}
 	}
 }

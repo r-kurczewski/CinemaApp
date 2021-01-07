@@ -103,6 +103,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="bdproj_fullDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>bdproj_fullDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Database\CinemaContext.cs" />
     <Compile Include="Database\Model\CinemaRoom.cs" />
     <Compile Include="Database\Model\Client.cs" />
@@ -115,20 +120,67 @@
     <Compile Include="Database\Model\Seance.cs" />
     <Compile Include="Database\Model\Ticket.cs" />
     <Compile Include="Database\Model\TicketType.cs" />
+    <Compile Include="Forms\DepartmentEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DepartmentEditForm.Designer.cs">
+      <DependentUpon>DepartmentEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EmployeeEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EmployeeEditForm.Designer.cs">
+      <DependentUpon>EmployeeEditForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MyExtensions.cs" />
+    <Compile Include="Forms\MovieEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReportForm.Designer.cs">
+      <DependentUpon>ReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SeanceEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SeanceEdit.Designer.cs">
+      <DependentUpon>SeanceEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Other\MyExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\ReserveTicketForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <EmbeddedResource Include="Forms\DepartmentEditForm.resx">
+      <DependentUpon>DepartmentEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EmployeeEditForm.resx">
+      <DependentUpon>EmployeeEditForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MovieEditForm.resx">
+      <DependentUpon>MovieEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReportForm.resx">
+      <DependentUpon>ReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SeanceEdit.resx">
+      <DependentUpon>SeanceEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -137,6 +189,17 @@
     <EmbeddedResource Include="Forms\ReserveTicketForm.resx">
       <DependentUpon>ReserveTicketForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="bdproj_fullDataSet.xsc">
+      <DependentUpon>bdproj_fullDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="bdproj_fullDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>bdproj_fullDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="bdproj_fullDataSet.xss">
+      <DependentUpon>bdproj_fullDataSet.xsd</DependentUpon>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -158,7 +221,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

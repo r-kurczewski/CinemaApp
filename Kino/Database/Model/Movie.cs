@@ -17,7 +17,6 @@ namespace Kino.Database.Model
 		public override string ToString()
 		{
 			return Title;
-			//return $"{ID}, {Title}, {Rating}, {Length.ToString("h'godz. 'mm'min'")}, {Premiere.ToString("dd.MM.yyyy")}";
 		}
 	}
 }

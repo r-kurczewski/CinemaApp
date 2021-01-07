@@ -7,7 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Kino
+namespace Kino.Forms
 {
 	public partial class ReserveTicketForm : Form
 	{
@@ -33,6 +33,8 @@ namespace Kino
 
 		private Seance selectedSeance;
 		private Department selectedDepartment;
+		private Label label7;
+		private Label label8;
 		private TicketType selectedTicketType;
 
 
@@ -63,6 +65,8 @@ namespace Kino
 			this.label6 = new System.Windows.Forms.Label();
 			this.ticketType = new System.Windows.Forms.ComboBox();
 			this.priceLabel = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label8 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.roomScheme)).BeginInit();
 			this.SuspendLayout();
@@ -100,7 +104,8 @@ namespace Kino
 			// seatNumber
 			// 
 			this.seatNumber.FormattingEnabled = true;
-			this.seatNumber.Location = new System.Drawing.Point(366, 317);
+			this.seatNumber.IntegralHeight = false;
+			this.seatNumber.Location = new System.Drawing.Point(345, 351);
 			this.seatNumber.Name = "seatNumber";
 			this.seatNumber.Size = new System.Drawing.Size(53, 21);
 			this.seatNumber.TabIndex = 3;
@@ -109,7 +114,7 @@ namespace Kino
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(275, 320);
+			this.label1.Location = new System.Drawing.Point(254, 354);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(85, 13);
 			this.label1.TabIndex = 4;
@@ -202,7 +207,7 @@ namespace Kino
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(275, 347);
+			this.label6.Location = new System.Drawing.Point(254, 381);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(53, 13);
 			this.label6.TabIndex = 4;
@@ -212,7 +217,7 @@ namespace Kino
 			// ticketType
 			// 
 			this.ticketType.FormattingEnabled = true;
-			this.ticketType.Location = new System.Drawing.Point(334, 344);
+			this.ticketType.Location = new System.Drawing.Point(313, 378);
 			this.ticketType.Name = "ticketType";
 			this.ticketType.Size = new System.Drawing.Size(85, 21);
 			this.ticketType.TabIndex = 3;
@@ -222,15 +227,35 @@ namespace Kino
 			// priceLabel
 			// 
 			this.priceLabel.AutoSize = true;
-			this.priceLabel.Location = new System.Drawing.Point(336, 369);
+			this.priceLabel.Location = new System.Drawing.Point(315, 403);
 			this.priceLabel.Name = "priceLabel";
-			this.priceLabel.Size = new System.Drawing.Size(80, 13);
+			this.priceLabel.Size = new System.Drawing.Size(74, 13);
 			this.priceLabel.TabIndex = 7;
-			this.priceLabel.Text = "Cena: 120.00zł";
+			this.priceLabel.Text = "Cena: 12.00zł";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(254, 332);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(76, 13);
+			this.label7.TabIndex = 8;
+			this.label7.Text = "Seans 3D: Nie";
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(257, 308);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(96, 13);
+			this.label8.TabIndex = 9;
+			this.label8.Text = "Lokalizacja: Lektor";
 			// 
 			// ReserveTicketForm
 			// 
 			this.ClientSize = new System.Drawing.Size(719, 443);
+			this.Controls.Add(this.label8);
+			this.Controls.Add(this.label7);
 			this.Controls.Add(this.priceLabel);
 			this.Controls.Add(this.ReserveButton);
 			this.Controls.Add(this.emailBox);
@@ -267,32 +292,30 @@ namespace Kino
 		private void departmentsList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			selectedDepartment = (Department)departmentsList.SelectedValue;
-			var sql = @"SELECT seances.*, 3d AS Is3d FROM seances 
-							JOIN cinema_rooms ON (cinema_room_id = cinema_rooms.id)
-							WHERE department_id = @dID AND movie_id = @mID";
-			var dID = new MySqlParameter("dID", selectedDepartment.ID);
-			var mID = new MySqlParameter("mID", MainForm.selectedMovie.ID);
-			var query = Program.dbContext.Seances.SqlQuery(sql, dID, mID);
-			seancesList.DataSource = query.ToList();
+			var query = (from s in Program.dbContext.Seances
+							 join c in Program.dbContext.CinemaRooms 
+							 on s.Cinema_Room_ID equals c.ID
+							 where c.Department_ID == selectedDepartment.ID
+							 select s).ToList();
+			seancesList.DataSource = query;
 			SetDetailsVisible(seancesList.Items.Count > 0);
 		}
 
 		private void seancesList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			selectedSeance = (Seance)seancesList.SelectedValue;
-			var sql = @"SELECT * FROM cinema_rooms 
-							WHERE department_id = @id;";
-			var pId = new MySqlParameter("@id", selectedDepartment.ID);
-			int roomSeats = Program.dbContext.CinemaRooms.SqlQuery(sql, pId).FirstOrDefault().Total_Seats;
+			int roomSeats = Program.dbContext.CinemaRooms.FirstOrDefault(x => x.ID == selectedDepartment.ID).Total_Seats;
 			var seats = new SortedSet<int>(Enumerable.Range(1, roomSeats));
 
-			sql = @"SELECT * FROM tickets
-					WHERE seance_id = @id";
-			var pID = new MySqlParameter("@id", selectedSeance.ID);
-			var takenSeats = new SortedSet<int>(Program.dbContext.Tickets.SqlQuery(sql, pID).Select(x => x.Seat_Number));
+			var takenSeats = Program.dbContext.Tickets.
+				Where(x=> x.Seance_ID == selectedSeance.ID).
+				Select(x=>x.Seat_Number).ToList();
 
 			seats.ExceptWith(takenSeats);
 			seatNumber.DataSource = seats.ToList();
+			label7.Text = $"3D: {(selectedSeance.Is3D ? "Tak" : "Nie")}";
+			label8.Text = $"Lokalizacja: {selectedSeance.Localisation}";
+			ticketType_SelectedIndexChanged(null, null);
 		}
 
 		private void SetDetailsVisible(bool visible)
@@ -303,6 +326,7 @@ namespace Kino
 			label4.Visible = visible;
 			label5.Visible = visible;
 			label6.Visible = visible;
+			label7.Visible = visible;
 			seatNumber.Visible = visible;
 			ticketType.Visible = visible;
 			nameBox.Visible = visible;
@@ -321,41 +345,50 @@ namespace Kino
 				MessageBox.Show("Wypełnij poprawnie wszystkie pola");
 				return;
 			}
-			var sql = @"SELECT * FROM clients WHERE name = @name AND surname = @surname AND phone = @phone AND email = @email";
-			List<string> conditions = new List<string>();
-			List<MySqlParameter> parameters = new List<MySqlParameter>();
-			parameters.Add(new MySqlParameter("@name", nameBox.Text));
-			parameters.Add(new MySqlParameter("@surname", surnameBox.Text));
-			parameters.Add(new MySqlParameter("@phone", phoneBox.Text));
-			parameters.Add(new MySqlParameter("@email", emailBox.Text));
-			int? clientID = Program.dbContext.Clients.SqlQuery(sql, parameters.ToArray()).FirstOrDefault()?.ID;
+			Client client = Program.dbContext.Clients.
+				FirstOrDefault(x => x.Name == nameBox.Text 
+				&& x.Surname == surnameBox.Text
+				&& x.Phone == phoneBox.Text 
+				&& x.Email == emailBox.Text);
 
-			MySqlCommand cmd;
-			while(!clientID.HasValue)
+			if(client is null)
 			{
-				var sql2 = @"INSERT INTO clients(name, surname, phone, email) VALUES (@name, @surname, @phone, @email)";
-				cmd = new MySqlCommand(sql2, Program.connection);
-				cmd.Parameters.AddRange(parameters.ToArray());
-				cmd.ExecuteNonQuery();
+				try
+				{
+					Program.dbContext.Clients.Add(new Client()
+					{
+						Name = nameBox.Text,
+						Surname = surnameBox.Text,
+						Phone = phoneBox.Text,
+						Email = emailBox.Text
+					});
+					Program.dbContext.SaveChanges();
+				}
+				catch
+				{
+					MessageBox.Show("Nie udało się zarezerwować. Spróbuj ponownie");
+					return;
+				}
 			}
-
-			sql = @"INSERT INTO tickets (seance_id, seat_number, client_id, ticket_type_id) 
-					VALUES (@seance, @seat, @client, @ticketType)";
-			parameters = new List<MySqlParameter>();
-			parameters.Add(new MySqlParameter("@seance", selectedSeance.ID));
-			parameters.Add(new MySqlParameter("@seat", (int)seatNumber.SelectedValue));
-			parameters.Add(new MySqlParameter("@client", clientID.Value));
-			parameters.Add(new MySqlParameter("@ticketType", selectedTicketType.ID));
-			cmd = new MySqlCommand(sql, Program.connection);
-			cmd.Parameters.AddRange(parameters.ToArray());
-			try
+			else
 			{
-				cmd.ExecuteNonQuery();
-				MessageBox.Show("Rezerwacja została dokonana.");
-			}
-			catch(MySqlException)
-			{
-				MessageBox.Show("Nie udało się zarezerwować. Spróbuj ponownie");
+				try
+				{
+					Program.dbContext.Tickets.Add(new Ticket()
+					{
+						Seance_ID = selectedSeance.ID,
+						Seat_Number = (int)seatNumber.SelectedValue,
+						Client_ID = client.ID,
+						Ticket_Type_ID = selectedTicketType.ID
+					});
+					Program.dbContext.SaveChanges();
+					MessageBox.Show("Rezerwacja została dokonana.");
+				}
+				catch (MySqlException)
+				{
+					MessageBox.Show("Nie udało się zarezerwować. Spróbuj ponownie");
+					return;
+				}
 			}
 		}
 

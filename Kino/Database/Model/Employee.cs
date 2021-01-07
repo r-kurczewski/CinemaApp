@@ -18,11 +18,7 @@ namespace Kino.Database.Model
 
 		public DateTime Job_Start { get; set; }
 
-		public DateTime Job_End { get; set; }
-
-		public string Phone { get; set; }
-
-		public string Email { get; set; }
+		public DateTime? Job_End { get; set; }
 
 		public override string ToString()
 		{

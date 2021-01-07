@@ -1,4 +1,4 @@
-﻿namespace Kino
+﻿namespace Kino.Forms
 {
 	partial class MainForm
 	{
@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -58,11 +59,39 @@
 			this.movieList = new System.Windows.Forms.ListBox();
 			this.movieImage = new System.Windows.Forms.PictureBox();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.departmentID = new System.Windows.Forms.TextBox();
+			this.label9 = new System.Windows.Forms.Label();
+			this.dbSelect = new System.Windows.Forms.ComboBox();
+			this.DeleteButton = new System.Windows.Forms.Button();
+			this.AddEditButton = new System.Windows.Forms.Button();
+			this.dataGridView1 = new System.Windows.Forms.DataGridView();
 			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.button2 = new System.Windows.Forms.Button();
+			this.button3 = new System.Windows.Forms.Button();
+			this.departmentsGridView = new System.Windows.Forms.DataGridView();
+			this.departmentsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+			this.bdproj_fullDataSet = new Kino.bdproj_fullDataSet();
+			this.seancesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+			this.seancesTableAdapter = new Kino.bdproj_fullDataSetTableAdapters.seancesTableAdapter();
+			this.ticketsTableAdapter = new Kino.bdproj_fullDataSetTableAdapters.ticketsTableAdapter();
+			this.departmentsTableAdapter = new Kino.bdproj_fullDataSetTableAdapters.departmentsTableAdapter();
+			this.ProfitReportButton = new System.Windows.Forms.Button();
+			this.EmployeesReportButton = new System.Windows.Forms.Button();
+			this.MovieReportButton = new System.Windows.Forms.Button();
+			this.label10 = new System.Windows.Forms.Label();
+			this.ticketsibfk3BindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.movieImage)).BeginInit();
+			this.tabPage2.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+			this.tabPage3.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.departmentsGridView)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.departmentsBindingSource)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bdproj_fullDataSet)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.seancesBindingSource)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.ticketsibfk3BindingSource)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -368,6 +397,12 @@
 			// 
 			// tabPage2
 			// 
+			this.tabPage2.Controls.Add(this.departmentID);
+			this.tabPage2.Controls.Add(this.label9);
+			this.tabPage2.Controls.Add(this.dbSelect);
+			this.tabPage2.Controls.Add(this.DeleteButton);
+			this.tabPage2.Controls.Add(this.AddEditButton);
+			this.tabPage2.Controls.Add(this.dataGridView1);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -376,15 +411,187 @@
 			this.tabPage2.Text = "Panel kierownika";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
+			// departmentID
+			// 
+			this.departmentID.Location = new System.Drawing.Point(289, 465);
+			this.departmentID.Name = "departmentID";
+			this.departmentID.ReadOnly = true;
+			this.departmentID.Size = new System.Drawing.Size(24, 20);
+			this.departmentID.TabIndex = 4;
+			this.departmentID.Text = "1";
+			this.departmentID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(171, 468);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(112, 13);
+			this.label9.TabIndex = 3;
+			this.label9.Text = "Kierownik oddziału nr:";
+			// 
+			// dbSelect
+			// 
+			this.dbSelect.FormattingEnabled = true;
+			this.dbSelect.Location = new System.Drawing.Point(6, 463);
+			this.dbSelect.Name = "dbSelect";
+			this.dbSelect.Size = new System.Drawing.Size(121, 21);
+			this.dbSelect.TabIndex = 2;
+			this.dbSelect.SelectedIndexChanged += new System.EventHandler(this.dbSelect_SelectedIndexChanged);
+			// 
+			// DeleteButton
+			// 
+			this.DeleteButton.Location = new System.Drawing.Point(591, 463);
+			this.DeleteButton.Name = "DeleteButton";
+			this.DeleteButton.Size = new System.Drawing.Size(75, 23);
+			this.DeleteButton.TabIndex = 1;
+			this.DeleteButton.Text = "Usuń";
+			this.DeleteButton.UseVisualStyleBackColor = true;
+			this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
+			// 
+			// AddEditButton
+			// 
+			this.AddEditButton.Location = new System.Drawing.Point(486, 463);
+			this.AddEditButton.Name = "AddEditButton";
+			this.AddEditButton.Size = new System.Drawing.Size(99, 23);
+			this.AddEditButton.TabIndex = 1;
+			this.AddEditButton.Text = "Dodaj/Modyfikuj";
+			this.AddEditButton.UseVisualStyleBackColor = true;
+			this.AddEditButton.Click += new System.EventHandler(this.AddNewButton_Click);
+			// 
+			// dataGridView1
+			// 
+			this.dataGridView1.AllowUserToAddRows = false;
+			this.dataGridView1.AllowUserToDeleteRows = false;
+			this.dataGridView1.AllowUserToResizeRows = false;
+			this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dataGridView1.Location = new System.Drawing.Point(6, 6);
+			this.dataGridView1.MultiSelect = false;
+			this.dataGridView1.Name = "dataGridView1";
+			this.dataGridView1.ReadOnly = true;
+			this.dataGridView1.Size = new System.Drawing.Size(660, 451);
+			this.dataGridView1.TabIndex = 0;
+			// 
 			// tabPage3
 			// 
+			this.tabPage3.Controls.Add(this.label10);
+			this.tabPage3.Controls.Add(this.MovieReportButton);
+			this.tabPage3.Controls.Add(this.EmployeesReportButton);
+			this.tabPage3.Controls.Add(this.ProfitReportButton);
+			this.tabPage3.Controls.Add(this.button2);
+			this.tabPage3.Controls.Add(this.button3);
+			this.tabPage3.Controls.Add(this.departmentsGridView);
 			this.tabPage3.Location = new System.Drawing.Point(4, 22);
 			this.tabPage3.Name = "tabPage3";
 			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPage3.Size = new System.Drawing.Size(672, 492);
 			this.tabPage3.TabIndex = 2;
-			this.tabPage3.Text = "Panel pracwnika";
+			this.tabPage3.Text = "Panel właściciela";
 			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(591, 463);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(75, 23);
+			this.button2.TabIndex = 3;
+			this.button2.Text = "Usuń";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.RemoveButton2_Click);
+			// 
+			// button3
+			// 
+			this.button3.Location = new System.Drawing.Point(486, 463);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(99, 23);
+			this.button3.TabIndex = 4;
+			this.button3.Text = "Dodaj/Modyfikuj";
+			this.button3.UseVisualStyleBackColor = true;
+			this.button3.Click += new System.EventHandler(this.AddEditButton2_Click);
+			// 
+			// departmentsGridView
+			// 
+			this.departmentsGridView.AllowUserToAddRows = false;
+			this.departmentsGridView.AllowUserToDeleteRows = false;
+			this.departmentsGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+			this.departmentsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.departmentsGridView.Location = new System.Drawing.Point(6, 6);
+			this.departmentsGridView.Name = "departmentsGridView";
+			this.departmentsGridView.ReadOnly = true;
+			this.departmentsGridView.Size = new System.Drawing.Size(660, 451);
+			this.departmentsGridView.TabIndex = 0;
+			// 
+			// departmentsBindingSource
+			// 
+			this.departmentsBindingSource.DataMember = "departments";
+			this.departmentsBindingSource.DataSource = this.bdproj_fullDataSet;
+			// 
+			// bdproj_fullDataSet
+			// 
+			this.bdproj_fullDataSet.DataSetName = "bdproj_fullDataSet";
+			this.bdproj_fullDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+			// 
+			// seancesBindingSource
+			// 
+			this.seancesBindingSource.DataMember = "seances";
+			this.seancesBindingSource.DataSource = this.bdproj_fullDataSet;
+			// 
+			// seancesTableAdapter
+			// 
+			this.seancesTableAdapter.ClearBeforeFill = true;
+			// 
+			// ticketsTableAdapter
+			// 
+			this.ticketsTableAdapter.ClearBeforeFill = true;
+			// 
+			// departmentsTableAdapter
+			// 
+			this.departmentsTableAdapter.ClearBeforeFill = true;
+			// 
+			// ProfitReportButton
+			// 
+			this.ProfitReportButton.Location = new System.Drawing.Point(56, 463);
+			this.ProfitReportButton.Name = "ProfitReportButton";
+			this.ProfitReportButton.Size = new System.Drawing.Size(75, 23);
+			this.ProfitReportButton.TabIndex = 5;
+			this.ProfitReportButton.Text = "Zysk";
+			this.ProfitReportButton.UseVisualStyleBackColor = true;
+			this.ProfitReportButton.Click += new System.EventHandler(this.ProfitReportButton_Click);
+			// 
+			// EmployeesReportButton
+			// 
+			this.EmployeesReportButton.Location = new System.Drawing.Point(218, 463);
+			this.EmployeesReportButton.Name = "EmployeesReportButton";
+			this.EmployeesReportButton.Size = new System.Drawing.Size(75, 23);
+			this.EmployeesReportButton.TabIndex = 5;
+			this.EmployeesReportButton.Text = "Pracownicy";
+			this.EmployeesReportButton.UseVisualStyleBackColor = true;
+			this.EmployeesReportButton.Click += new System.EventHandler(this.EmployeesReportButton_Click);
+			// 
+			// MovieReportButton
+			// 
+			this.MovieReportButton.Location = new System.Drawing.Point(137, 463);
+			this.MovieReportButton.Name = "MovieReportButton";
+			this.MovieReportButton.Size = new System.Drawing.Size(75, 23);
+			this.MovieReportButton.TabIndex = 5;
+			this.MovieReportButton.Text = "Filmy";
+			this.MovieReportButton.UseVisualStyleBackColor = true;
+			this.MovieReportButton.Click += new System.EventHandler(this.MovieReportButton_Click);
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(6, 468);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(44, 13);
+			this.label10.TabIndex = 6;
+			this.label10.Text = "Raporty";
+			// 
+			// ticketsibfk3BindingSource
+			// 
+			this.ticketsibfk3BindingSource.DataMember = "tickets_ibfk_3";
+			this.ticketsibfk3BindingSource.DataSource = this.seancesBindingSource;
 			// 
 			// MainForm
 			// 
@@ -400,6 +607,16 @@
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.movieImage)).EndInit();
+			this.tabPage2.ResumeLayout(false);
+			this.tabPage2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+			this.tabPage3.ResumeLayout(false);
+			this.tabPage3.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.departmentsGridView)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.departmentsBindingSource)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bdproj_fullDataSet)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.seancesBindingSource)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.ticketsibfk3BindingSource)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -435,6 +652,26 @@
 		private System.Windows.Forms.PictureBox movieImage;
 		private System.Windows.Forms.Label RatingLabel;
 		private System.Windows.Forms.Label PremiereDate;
+		private bdproj_fullDataSet bdproj_fullDataSet;
+		private System.Windows.Forms.BindingSource seancesBindingSource;
+		private bdproj_fullDataSetTableAdapters.seancesTableAdapter seancesTableAdapter;
+		private System.Windows.Forms.DataGridView departmentsGridView;
+		private System.Windows.Forms.BindingSource ticketsibfk3BindingSource;
+		private bdproj_fullDataSetTableAdapters.ticketsTableAdapter ticketsTableAdapter;
+		private System.Windows.Forms.BindingSource departmentsBindingSource;
+		private bdproj_fullDataSetTableAdapters.departmentsTableAdapter departmentsTableAdapter;
+		private System.Windows.Forms.DataGridView dataGridView1;
+		private System.Windows.Forms.Button DeleteButton;
+		private System.Windows.Forms.Button AddEditButton;
+		private System.Windows.Forms.ComboBox dbSelect;
+		private System.Windows.Forms.TextBox departmentID;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button button3;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Button MovieReportButton;
+		private System.Windows.Forms.Button EmployeesReportButton;
+		private System.Windows.Forms.Button ProfitReportButton;
 	}
 }
 

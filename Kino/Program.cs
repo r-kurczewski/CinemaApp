@@ -1,5 +1,6 @@
 ﻿using Kino.Database;
 using Kino.Database.Model;
+using Kino.Forms;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace Kino
 			}
 			dbContext = new CinemaContext(connection);
 
-			var query = dbContext.Clients.ToList();
+			var query = dbContext.Seances.ToList();
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
