@@ -24,6 +24,5 @@ namespace Kino.Database
 
 		public CinemaContext(DbConnection existingConnection, bool contextOwnsConnection = false)
 		  : base(existingConnection, contextOwnsConnection) { }
-
 	}
 }
